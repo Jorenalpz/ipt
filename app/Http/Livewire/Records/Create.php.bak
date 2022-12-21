@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Livewire\Records;
+
+use Livewire\Component;
+use App\Models\Treatmentrecords;
+
+class Create extends Component
+{
+
+    public $user_id, $illness, $symptoms, $medications, $severity;
+
+    public function addRecord(){
+        $this->validate([
+
+            'illness' => ['required', 'string'],
+            'symptoms' => ['required', 'string'],
+            'medications' => ['required', 'string'],
+            'severity' => ['required', 'string'],
+        ]);
+
+        $record = Treatmentrecords::create([
+            'illness' => $this->illness,
+            'symptoms' => $this->symptoms,
+            'medications' => $this->medications,
+            'severity' => $this->severity,
+        ]);
+
+        return redirect('/admin/records')->with('message', 'Record added successfully');
+    }
+    public function render()
+    {
+        $records = Treatmentrecords::get();
+        return view('livewire.records.create', compact('records'));
+    }
+}
